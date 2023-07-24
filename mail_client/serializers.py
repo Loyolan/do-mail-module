@@ -17,3 +17,8 @@ class PasswordUpdateSerializer(serializers.Serializer):
         instance.set_password(new_password)
         instance.save()
         return instance
+
+class ConnexionUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Connexion
+        fields = ['mail_address', 'domaine', 'port']

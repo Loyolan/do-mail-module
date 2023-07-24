@@ -3,7 +3,7 @@ from rest_framework import generics, status
 from rest_framework.response import Response
 
 from .models import Connexion
-from .serializers import ConnexionSerializer, PasswordUpdateSerializer
+from .serializers import ConnexionSerializer, PasswordUpdateSerializer, ConnexionUpdateSerializer
 
 from .permissions import IsAdminUser
 from rest_framework.permissions import AllowAny
@@ -49,4 +49,20 @@ class UpdatePasswordView(generics.UpdateAPIView):
         serializer.is_valid(raise_exception=True)
         self.perform_update(serializer)
 
-        return Response({"message": "Mot de passe mis à jour avec succès."}, status=status.HTTP_200_OK)
+        return Response({"status": "success", "message": "Password updated with success"}, status=status.HTTP_200_OK)
+
+# UPDATE INFORMATIONS
+class UpdateConnexionView(generics.UpdateAPIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = ConnexionUpdateSerializer
+
+    def get_object(self):
+        return self.request.user
+
+    def update(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = self.get_serializer(instance, data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_update(serializer)
+
+        return Response({"status": "success", "message": "Informations Updated"}, status=status.HTTP_200_OK)
