@@ -56,11 +56,11 @@ class UpdatePasswordViewTestCase(APITestCase):
         self.assertEqual(response.data['status'], 'success')
 
 # Test for updating connexion information
-
+class UpdateConnexionViewTestCase(APITestCase):
     def setUp(self):
         self.client = APIClient()
         self.login_url = reverse('token_obtain_pair')
-        self.update_password_url = reverse('update_password')
+        self.update_connexion_url = reverse('update_connexion')
 
         # Create a new connexion
         self.connexion = Connexion.objects.create_user(mail_address='user_infos@example.com', password='testpassword', domaine="example.com", port=587)
@@ -73,11 +73,14 @@ class UpdatePasswordViewTestCase(APITestCase):
         self.client.force_authenticate(user=self.connexion, token=self.token)
 
     def test_update_infos(self):
-        data = {"mail_address": "kiadloyolan123@yahoo.fr", "domaine": "smtp.yahoo.com", "port": 122 }
-        response = self.client.put(self.update_password_url, data, format='json')
+        data = {'mail_address': 'kiadloyolan123@yahoo.fr', 'domaine': 'smtp.yahoo.com', 'port': 122 }
+        response = self.client.put(self.update_connexion_url, data, format='json')
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data['status'], 'success')
+        self.assertEqual(response.data['mail_address'], data['mail_address'])
+        self.assertEqual(response.data['domaine'], data['domaine'])
+        self.assertEqual(response.data['port'], data['port'])
+
 
 
 # ====================== INTEGRATIONS TEST =========================#
