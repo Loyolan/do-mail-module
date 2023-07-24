@@ -64,9 +64,11 @@ class UpdateConnexionView(generics.UpdateAPIView):
         serializer = self.get_serializer(instance, data=request.data)
         serializer.is_valid(raise_exception=True)
         self.perform_update(serializer)
+        updated_user = Connexion.objects.get(pk=instance.pk)
+        response_data = ConnexionSerializer(updated_user).data
+        return Response(response_data, status=status.HTTP_200_OK)
 
-        return Response({"status": "success", "message": "Connexion's Informations Updated"}, status=status.HTTP_200_OK)
-
+# DELETE CONNEXION
 class DeleteConnexionView(generics.DestroyAPIView):
     permission_classes = [IsAuthenticated]
 
