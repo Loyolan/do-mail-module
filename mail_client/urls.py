@@ -5,5 +5,6 @@ from . import views
 urlpatterns = [
     path('auth-token/', TokenObtainPairView.as_view(), name='token_obtain_pair'), 
     path('auth-token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
-    path('secret_data/', views.SecretDataView.as_view(), name='secret_data'),
+    path('connexions/', views.ListConnexionView.as_view(), name='list_connexion'),
+    path('create_connexion/', views.CreateConnexionView.as_view(), name='create_connexion')
 ]

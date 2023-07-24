@@ -27,6 +27,9 @@ class Connexion(AbstractBaseUser, PermissionsMixin):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    is_staff = models.BooleanField(default=False)
+    is_superuser = models.BooleanField(default=False)
+
     objects = CustomUserManager()
 
     USERNAME_FIELD = 'mail_address'
@@ -40,3 +43,11 @@ class Connexion(AbstractBaseUser, PermissionsMixin):
 
     def get_short_name(self):
         return self.mail_address
+
+    @property
+    def is_anonymous(self):
+        return False
+
+    @property
+    def is_authenticated(self):
+        return True
