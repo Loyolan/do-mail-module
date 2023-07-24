@@ -3,7 +3,6 @@
 *.pot
 *.pyc
 __pycache__/
-do_mail_module/settings.py
 db.sqlite3
 db.sqlite3-journal
 media
