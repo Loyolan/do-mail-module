@@ -81,9 +81,57 @@ class UpdateConnexionViewTestCase(APITestCase):
         self.assertEqual(response.data['domaine'], data['domaine'])
         self.assertEqual(response.data['port'], data['port'])
 
+Test for connexion deletion
+class DeleteConnexionViewTestCase(APITestCase):
+    def setUp(self):
+        self.client = APIClient()
+        self.login_url = reverse('token_obtain_pair')
+        self.delete_connexion_url = reverse('delete_connexion')
 
+        # Create a new connexion
+        self.connexion = Connexion.objects.create_user(mail_address='user_delete@example.com', password='testpassword', domaine="example.com", port=587)
 
-# ====================== INTEGRATIONS TEST =========================#
+        # Obtain access token
+        refresh = RefreshToken.for_user(self.connexion)
+        self.token = str(refresh.access_token)
+
+        # Force authentication
+        self.client.force_authenticate(user=self.connexion, token=self.token)
+
+    def test_update_password(self):
+        response = self.client.delete(self.delete_connexion_url)
+
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+        self.assertEqual(response.data['status'], 'success')
+
+# Test for deconnexion
+class LogoutViewTestCase(APITestCase):
+    def setUp(self):
+        self.client = APIClient()
+        self.login_url = reverse('token_obtain_pair')
+        self.refresh_url = reverse('token_refresh')
+        self.reject_token_url = reverse('token_reject')
+
+        # Create a new connexion
+        self.connexion = Connexion.objects.create_user(mail_address='user_delete@example.com', password='testpassword', domaine="example.com", port=587)
+
+        # Obtain access token
+        refresh = RefreshToken.for_user(self.connexion)
+        self.token = str(refresh)
+
+        # Force authentication
+        self.client.force_authenticate(user=self.connexion, token=self.token)
+
+    def test_logout(self):
+        data_token = {'refresh': self.token}
+        response = self.client.post(self.reject_token_url, json.dumps(data_token), content_type='application/json')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        test = self.client.post(self.refresh_url, json.dumps(data_token), content_type='application/json')
+        self.assertEqual(test.status_code, status.HTTP_401_UNAUTHORIZED)
+        self.assertEqual(test.data['code'], 'token_not_valid')
+
+====================== INTEGRATIONS TEST =========================#
 # Test for generating jwt auth
 class AuthTokenTest(APITestCase):
     def setUp(self):

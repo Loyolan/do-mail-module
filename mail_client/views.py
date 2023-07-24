@@ -79,4 +79,4 @@ class DeleteConnexionView(generics.DestroyAPIView):
         instance = self.get_object()
         instance.delete()
 
-        return Response({"message": "Connexion deleted"}, status=status.HTTP_204_NO_CONTENT)
+        return Response({"status": "success", "message": "Connexion deleted"}, status=status.HTTP_204_NO_CONTENT)
