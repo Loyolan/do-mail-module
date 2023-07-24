@@ -1,5 +1,11 @@
-from django.shortcuts import render
+from rest_framework_simplejwt.views import TokenObtainPairView
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
 
-# Create your views here.
-def hello():
-    return render("HELLO WORLD")
+class SecretDataView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        secret_data = "This is some secret data!"
+        return Response({"data": secret_data})
