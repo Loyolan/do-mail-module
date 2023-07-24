@@ -1,11 +1,12 @@
 from django.test import TestCase, Client
-from rest_framework.test import APIClient
+from rest_framework.test import APIClient, APITestCase
 from mail_client.models import Connexion
 import json
 from rest_framework import status
 from django.urls import reverse
 from rest_framework_simplejwt.tokens import RefreshToken
 
+#======================= UNIT TEST =================================#
 # Test for creating connexion
 class CreateConnexionViewTestCase(TestCase):
     def test_create_connexion(self):
@@ -31,6 +32,32 @@ class CreateConnexionViewTestCase(TestCase):
         self.assertEqual(connexion.domaine, 'example.com')
         self.assertEqual(connexion.port, 587)
 
+class UpdatePasswordViewTestCase(APITestCase):
+    def setUp(self):
+        self.client = APIClient()
+        self.login_url = reverse('token_obtain_pair')
+        self.update_password_url = reverse('update_password')
+
+        # Create a new connexion
+        self.connexion = Connexion.objects.create_user(mail_address='user_pass@example.com', password='testpassword', domaine="example.com", port=587)
+
+        # Obtain access token
+        refresh = RefreshToken.for_user(self.connexion)
+        self.token = str(refresh.access_token)
+
+        # Force authentication
+        self.client.force_authenticate(user=self.connexion, token=self.token)
+
+    def test_update_password(self):
+        data = {'new_password': 'testpassword1'}
+        response = self.client.put(self.update_password_url, data, format='json')
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data['status'], 'success')
+
+
+
+# ====================== INTEGRATIONS TEST =========================#
 # Test for generating jwt auth
 class AuthTokenTest(TestCase):
     def setUp(self):
