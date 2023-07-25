@@ -2,10 +2,10 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework import generics, status
 from rest_framework.response import Response
 
-from .models import Connexion
-from .serializers import ConnexionSerializer, PasswordUpdateSerializer, ConnexionUpdateSerializer
+from mail_client.models import Connexion
+from mail_client.serializers import ConnexionSerializer, PasswordUpdateSerializer, ConnexionUpdateSerializer
 
-from .permissions import IsAdminUser
+from mail_client.permissions import IsAdminUser
 from rest_framework.permissions import AllowAny
 
 from django.contrib.auth.hashers import make_password
