@@ -81,7 +81,7 @@ class UpdateConnexionViewTestCase(APITestCase):
         self.assertEqual(response.data['domaine'], data['domaine'])
         self.assertEqual(response.data['port'], data['port'])
 
-Test for connexion deletion
+# Test for connexion deletion
 class DeleteConnexionViewTestCase(APITestCase):
     def setUp(self):
         self.client = APIClient()
@@ -131,7 +131,7 @@ class LogoutViewTestCase(APITestCase):
         self.assertEqual(test.status_code, status.HTTP_401_UNAUTHORIZED)
         self.assertEqual(test.data['code'], 'token_not_valid')
 
-====================== INTEGRATIONS TEST =========================#
+#====================== INTEGRATIONS TEST =========================#
 # Test for generating jwt auth
 class AuthTokenTest(APITestCase):
     def setUp(self):

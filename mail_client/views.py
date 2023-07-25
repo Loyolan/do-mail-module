@@ -10,6 +10,7 @@ from rest_framework.permissions import AllowAny
 
 from django.contrib.auth.hashers import make_password
 
+#========================== VIEW FOR CONNEXION ===========================#
 # LIST CONNEXIONS
 class ListConnexionView(generics.ListAPIView):
     permission_classes = [IsAuthenticated, IsAdminUser]
@@ -80,3 +81,5 @@ class DeleteConnexionView(generics.DestroyAPIView):
         instance.delete()
 
         return Response({"status": "success", "message": "Connexion deleted"}, status=status.HTTP_204_NO_CONTENT)
+
+#====================== VIEW FOR MAIL CHECKER ============================#
