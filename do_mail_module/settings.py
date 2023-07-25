@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'mail_client',
     'rest_framework_simplejwt',
+    'rest_framework_simplejwt.token_blacklist'
 ]
 
 MIDDLEWARE = [
@@ -123,6 +124,14 @@ DATABASES = {
         'NAME': os.environ.get('PG_DB','postgres'),
         'PORT': os.environ.get('PG_PORT','5432'),
         'HOST': os.environ.get('PG_HOST','localhost'), # uses the container if set, otherwise it runs locally
+    },
+    'test': {
+        'ENGINE': os.environ.get('DB_DRIVER','django.db.backends.postgresql'),
+        'USER': os.environ.get('PG_USER'),
+        'PASSWORD':os.environ.get('PG_PASSWORD'),
+        'NAME': os.environ.get('PG_DB_TEST'),
+        'PORT': os.environ.get('PG_PORT','5432'),
+        'HOST': os.environ.get('PG_HOST','localhost'),
     }
 }
 
