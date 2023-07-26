@@ -1,6 +1,6 @@
 from django.urls import path
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView, TokenVerifyView, TokenBlacklistView
-from .views import connexion
+from .views import connexion, synchronization
 
 urlpatterns = [
     path('auth-token/', TokenObtainPairView.as_view(), name='token_obtain_pair'), 
@@ -11,5 +11,6 @@ urlpatterns = [
     path('create-connexion/', connexion.CreateConnexionView.as_view(), name='create_connexion'),
     path('update-password/', connexion.UpdatePasswordView.as_view(), name='update_password'),
     path('update-connexion/', connexion.UpdateConnexionView.as_view(), name='update_connexion'),
-    path('delete-connexion/', connexion.DeleteConnexionView.as_view(), name='delete_connexion')
+    path('delete-connexion/', connexion.DeleteConnexionView.as_view(), name='delete_connexion'),
+    path('test-synchronization/', synchronization.SynchronizeMailView.as_view(), name="test_sync")
 ]
